@@ -6,7 +6,8 @@ import re
 import json
 cur_path =os.path.abspath(os.path.join(os.path.dirname('__file__'), os.path.pardir))
 sys.path.append(cur_path)
-sys.path.append(os.path.dirname(__file__)+'/../')
+cur_path = os.path.abspath(os.path.dirname(__file__))
+sys.path.append(cur_path)
 
 from thrift_gen.py3.knowledge_extraction import ExtractionService
 from thrift_gen.py3.knowledge_extraction.ttypes import ExtReq, ExtRsp, BadCaseReq, BadCaseRsp, Knowledge
@@ -70,7 +71,7 @@ class ExtractionHandler(object):
         rsp.text = req.text
         rsp.server_info = '47.94.210.236'
         #FIXME: 调用模型获取kn
-        path = os.path.dirname(__file__) + '/out/1.txt'
+        path = cur_path + '/out/1.txt'
         sentences = self.get_sentences(req.text)
         rsp.kn = self.handle(sentences, path)
         return rsp
