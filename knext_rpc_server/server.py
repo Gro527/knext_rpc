@@ -18,7 +18,7 @@ from knext_rpc_server.extraction_libs.open_entity_relation_extraction.code.core.
 from knext_rpc_server.extraction_libs.open_entity_relation_extraction.code.core.extractor import Extractor
 
 
-__HOST = 'localhost'
+__HOST = '0.0.0.0'
 __PORT = 9000
 
 
@@ -52,12 +52,15 @@ class ExtractionHandler(object):
             # 抽取三元组
             self.extractor.extract(line, sentence, outpath, 1)
 
+
         res = []
-        with open(outpath, 'r') as f:
-            for line in f.readlines():
-                kn = json.loads(line)
-                if len(kn.get('knowledge',[])) == 3:
-                    res.append(Knowledge(kn[0], kn[1], kn[2]))
+        if os.path.exists(outpath):
+            with open(outpath, 'r') as f:
+                for line in f.readlines():
+                    kn = json.loads(line)
+                    knowledge = kn.get('knowledge',[])
+                    if len(knowledge) == 3:
+                        res.append(Knowledge(knowledge[0], knowledge[1], knowledge[2]))
         
         return res
             
@@ -67,8 +70,9 @@ class ExtractionHandler(object):
         rsp.text = req.text
         rsp.server_info = '47.94.210.236'
         #FIXME: 调用模型获取kn
-        rsp.kn = self.handle(req.text, 'out/1.txt')
-        
+        path = os.path.dirname(__file__) + '/out/1.txt'
+        sentences = self.get_sentences(req.text)
+        rsp.kn = self.handle(sentences, path)
         return rsp
     
     def set_badcase(self, req):
