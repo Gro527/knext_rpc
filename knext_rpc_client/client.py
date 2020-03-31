@@ -21,7 +21,7 @@ transport = TTransport.TBufferedTransport(tsocket)
 protocol = TBinaryProtocol.TBinaryProtocol(transport)
 client = Client(protocol)
 
-req = ExtReq('习近平访问特朗普。','guhaoping')
+req = ExtReq('习近平访问特朗普。高科访问中国。习近平在上海观察。习近平对埃及进行国事访问。','guhaoping')
 transport.open()
 print('client-requets')
 res = client.get_extraction(req)
