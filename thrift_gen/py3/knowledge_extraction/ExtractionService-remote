@@ -26,6 +26,7 @@ if len(sys.argv) <= 1 or sys.argv[1] == '--help':
     print('Functions:')
     print('  ExtRsp get_extraction(ExtReq req)')
     print('  BadCaseRsp set_badcase(BadCaseReq req)')
+    print('  MarkRsp set_mark(MarkReq req)')
     print('')
     sys.exit(0)
 
@@ -116,6 +117,12 @@ elif cmd == 'set_badcase':
         print('set_badcase requires 1 args')
         sys.exit(1)
     pp.pprint(client.set_badcase(eval(args[0]),))
+
+elif cmd == 'set_mark':
+    if len(args) != 1:
+        print('set_mark requires 1 args')
+        sys.exit(1)
+    pp.pprint(client.set_mark(eval(args[0]),))
 
 else:
     print('Unrecognized method %s' % cmd)
